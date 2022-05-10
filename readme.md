@@ -11,5 +11,5 @@ pipenv sync
 # Running
 
 ```bash
-flask run
+quart run
 ```
