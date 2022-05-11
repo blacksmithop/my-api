@@ -20,9 +20,16 @@
             font-weight: 400;
         }
         
+        .description {
+            display: flex;
+            flex-wrap: wrap;
+            align-content: stretch;
+        }
+        
         .form-control-dark {
             background-color: rgba(255, 255, 255, .05);
             border-color: rgba(255, 255, 255, .15);
+            color: white;
         }
         
         span {
@@ -39,6 +46,17 @@
             width: 150px;
         }
     </style>
+
+    <script>
+        function userStats(event) {
+            var url = window.location.toString();
+            console.log(url)
+            url = url.replace(/[^\/]*$/, event.target.elements.username.value);
+            console.log(url)
+            window.location.href = url;
+            event.preventDefault();
+        }
+    </script>
 </head>
 
 <body class="bg-secondary">
@@ -46,10 +64,17 @@
         <div class="col-md-12 text-center">
             <div class="dropdown btn-group">
                 <div class="dropdown-menu dropdown-menu-dark border-0 pt-0 mx-0 rounded-3 shadow overflow-hidden" style="width: 280px;">
-                    <form class="p-2 mb-2 bg-dark border-bottom border-dark">
-                        <input type="search" class="form-control form-control-dark" autocomplete="false" placeholder="Type to filter...">
+                    <form class="p-2 mb-2 bg-dark border-bottom border-dark" onsubmit="userStats(event)">
+                        <input name="username" type="search" class="form-control form-control-dark" autocomplete="false" placeholder="Eg. FancyUsername">
                     </form>
                     <ul class="list-unstyled mb-0">
+                        {% if 'message' in data %}
+                        <li>
+                            <a class="dropdown-item d-flex align-items-center gap-2 py-2" href="#">
+                                <span class="d-inline-block bg-danger rounded-circle"></span> User was not found!
+                            </a>
+                        </li>
+                        {% endif %} {% if 'message' not in data %}
                         <li>
                             <a class="dropdown-item d-flex align-items-center gap-2 py-2" href="#">
                                 <span class="d-inline-block bg-success rounded-circle"></span> Username:
@@ -63,9 +88,9 @@
                             </a>
                         </li>
                         <li>
-                            <a class="dropdown-item d-flex align-items-center gap-2 py-2" href="#">
+                            <a class="dropdown-item d-flex align-items-center gap-2 py-2 description" href="#">
                                 <span class="d-inline-block bg-warning rounded-circle"></span> Bio:
-                                <code>{{ data.bio }}</code>
+                                <code style="text-overflow: ellipsis; overflow: hidden;">{{ data.bio }}</code>
                             </a>
                         </li>
                         <li>
@@ -100,11 +125,13 @@
                         </li>
                         <li class="text-center mt-1">
                             <a target="_blank" href={{ data.blog }} type="button" class="btn btn-danger">Blog</a>
-                            <a target="_blank" href={{ data.url }} type="button" class="btn btn-primary">Page</a>
+                            <a target="_blank" href={{ data.url }} type="button" class="btn btn-primary">Api</a>
+                            <a target="_blank" href={{ data.html_url }} type="button" class="btn btn-warning">Page</a>
                         </li>
                         <li class="text-center mt-1">
-                            <img class="rounded-circle mt-1" src={{ data.avatar_url }} alt="Avatar image">
+                            <img class="rounded-circle mt-1 border border-dark border-3" src={{ data.avatar_url }} alt="Avatar image">
                         </li>
+                        {% endif %}
                     </ul>
                 </div>
             </div>

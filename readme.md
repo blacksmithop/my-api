@@ -1,6 +1,6 @@
 # my-api
 
-Quart api server to make my life easiers
+Quart api server to make my life easier
 
 ### Installation
 

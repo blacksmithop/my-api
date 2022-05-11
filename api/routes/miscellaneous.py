@@ -18,11 +18,15 @@ async def testAPI():
     return await render_template('testapi.html')
 
 
-@misc.route('/github', methods=['GET'])
-async def githubStats():
-    """Return github stats for an user"""
+async def getUser(username: str):
     async with ClientSession() as session:
-        async with session.get('https://api.github.com/users/blacksmithop') as response:
-            data = await response.json()
-            print(data['login'])
-            return await render_template('github.html', data=data)
+        async with session.get(f'https://api.github.com/users/{username}') as response:
+            return await response.json()
+
+
+@misc.route('/github/', defaults={'username': 'blacksmithop'})
+@misc.route('/github/<username>', methods=['GET'])
+async def githubStats(username=None):
+    """Return github stats for an user"""
+    data = await getUser(username)
+    return await render_template('github.html', data=data)

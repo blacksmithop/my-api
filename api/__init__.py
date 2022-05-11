@@ -1,9 +1,11 @@
 from .routes.miscellaneous import misc
 from .routes.utility import util
 from quart import Quart, jsonify
-
+from .utils.middleware import SimpleMiddleware
 
 app = Quart(__name__, static_folder='static')
+
+app.asgi_app = SimpleMiddleware(app.asgi_app)
 
 # import & register blueprints
 
