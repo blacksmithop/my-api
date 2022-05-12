@@ -6,6 +6,7 @@ name = "pypi"
 [packages]
 quart = "*"
 aiohttp = "*"
+flask-caching = "*"
 
 [dev-packages]
 

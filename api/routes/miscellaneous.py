@@ -1,6 +1,8 @@
+import quart.flask_patch
 from quart import Blueprint, jsonify, render_template
 from time import localtime, strftime
 from aiohttp import ClientSession
+from ..utils.cache import cache
 
 misc = Blueprint('Misc', __name__, template_folder='templates')
 
@@ -24,6 +26,7 @@ async def getUser(username: str):
             return await response.json()
 
 
+@cache.cached(timeout=None)
 @misc.route('/github/', defaults={'username': 'blacksmithop'})
 @misc.route('/github/<username>', methods=['GET'])
 async def githubStats(username=None):
